@@ -14,4 +14,4 @@ $config['size_preview']	             = 800;
  * Directory to store cache files
  * including scanned native file, thumb and preview files
  */
-$config['cache_dir']                   = APPPATH .'cache/saneweb' ;
+$config['data_path']                   = 'data' ;

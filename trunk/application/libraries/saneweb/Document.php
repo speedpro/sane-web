@@ -23,8 +23,8 @@
  */
 class Document{
 
-    const DEFAULT_THUMB_SIZE = 200 ;
-    const DEFAULT_PREVIEW_SIZE = 800 ;
+    const DEFAULT_THUMB_SIZE = 160 ;
+    const DEFAULT_PREVIEW_SIZE = 600 ;
 
     private $config ;
 
@@ -51,7 +51,7 @@ class Document{
     public function get_document_list()
     {
         $ary = array();
-        $dir = $this->config_item('cache_dir') . '/doc/' ;
+        $dir = $this->config_item('data_path') . '/doc/' ;
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
@@ -79,17 +79,17 @@ class Document{
 
     public function get_doc($fname)
     {
-        return $this->config_item('cache_dir') . '/doc/' . $fname.'.pnm' ;
+        return $this->config_item('data_path') . '/doc/' . $fname.'.pnm' ;
     }
 
     public function get_thumb($fname)
     {
-        return $this->config_item('cache_dir') . '/thumb/' . $fname.'.jpg' ;
+        return $this->config_item('data_path') . '/thumb/' . $fname.'.jpg' ;
     }
 
     public function get_preview($fname)
     {
-        return $this->config_item('cache_dir') . '/preview/' . $fname.'.jpg' ;
+        return $this->config_item('data_path') . '/preview/' . $fname.'.jpg' ;
     }
 
     public function reset($fname)
