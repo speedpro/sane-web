@@ -110,8 +110,8 @@ div.thumbtick_not_selected {
 
 <div id="main_container"></div>
 
-<script src='<?php echo site_url(APPPATH."assets/jquery/jquery-1.6.2.min.js");?>'></script>
-<script src='<?php echo site_url(APPPATH."assets/jquery/saneweb.plugin.js");?>'></script>
+<script src='<?php echo site_url("assets/jquery/jquery-1.6.2.min.js");?>'></script>
+<script src='<?php echo site_url("assets/jquery/saneweb.plugin.js");?>'></script>
 <script language="javascript">
 var APPURL = "<?php echo site_url('/');?>";
 
@@ -152,7 +152,7 @@ $(document).ready(function(){
                 .css('width', "48px")
                 .css('height', "48px")
                 .css('cursor', "pointer")
-                .css('background-image', "url(<?php echo site_url(APPPATH.'assets/images/tick.png')?>)")
+                .css('background-image', "url(<?php echo site_url('assets/images/tick.png')?>)")
                 .css('background-repeat', "no-repeat")
                 .css('background-scroll', "scroll")
                 .css('background-color', "transparent")
