@@ -27,7 +27,7 @@
 
 <script src='<?php echo site_url("assets/js/jquery-1.6.2.min.js");?>'></script>
 <script src='<?php echo site_url("assets/js/jquery-ui-1.8.16.custom.min.js");?>'></script>
-<script src='<?php echo site_url("assets/jquery/saneweb.plugin.js");?>'></script>
+<script src='<?php echo site_url("assets/js/jquery.saneweb.js");?>'></script>
 <script language="javascript">
 var APPURL = "<?php echo site_url('/');?>";
 
