@@ -70,6 +70,7 @@ div.saneweb_container img{
     position: relative;
     float: left ;
     display: block ;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 div#action_box{
@@ -125,4 +126,13 @@ div.saneweb_container div.thumbtick_not_selected {
     background-position:100% 0%;
 }
 
+div#saneweb_preview
+{
+    display: none;
+}
 
+
+div#saneweb_preview img#thumb
+{
+    flost: left;
+}

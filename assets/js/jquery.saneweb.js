@@ -13,7 +13,7 @@
  *  $('#div').saneweb()
  *
  */
-;(function($) { 
+;(function($) {
 
 $.fn.saneweb = function(options) {
     // in 1.3+ we can fix mistakes with the ready state
@@ -27,31 +27,107 @@ $.fn.saneweb = function(options) {
         return this;
     }
 
-    return this.each(function(index){
-        var $this = $(this);
-        $this.text('');
-        var d = new Date();
-        var daysInMonth = (new Date( d.getFullYear(), d.getMonth()+1, 0)).getDate();
+    var config = {
+        service: ''
+    };
+    if (options){$.extend(config, options);}
 
-        $('<div/>').text(d.getFullYear() + ' / ' + (d.getMonth()>=9 ? (1+d.getMonth()) : ('0'+(1+d.getMonth())) ) ).appendTo($this).css({'text-align':'center'});
-        var t = $("<table class='simpleCalendar_container'/>");
-        t.append($("<tr class='simpleCalendar_header'> <th class='simpleCalendar_weekend'>Su</th> <th>Mo</th> <th>Tu</th> <th>We</th> <th>Th</th> <th>Fr</th> <th class='simpleCalendar_weekend'>Sa</th> </tr>"));
-        var tr= $('<tr/>').appendTo(t);
-        for(var i=0;i<42;i++)
-        {
-            var dt=i-(new Date(d.getFullYear(), d.getMonth(), 1)).getDay()+1;
-            $('<td/>')
-                .text(dt>0&&dt<=daysInMonth ? dt : '')
-                .addClass( 'simpleCalendar_day' )
-                .addClass( (i%7==0 || i%7==6) ? 'simpleCalendar_weekend' : '')
-                .addClass( (dt==d.getDate())  ? 'simpleCalendar_today'   : '')
-                .appendTo(tr);
-            if(i%7==6) tr= $('<tr/>').appendTo(t);
-        }
-        $this.append(t);
-        
+    saneweb_init();
+
+    var $this = $(this);
+
+    $.getJSON(options.service+'/get_documents', function(data){
+        $(data).each(function(i,v){
+            var img = $('<img/>')
+                .data('preview', v['preview'])
+                .data('thumb', v['thumb'])
+                .data('label', v['doc'])
+                .attr('src', v['thumb'])
+                .click(saneweb_showPreview)
+            ;
+            var label = $('<div/>')
+                .addClass('label')
+                .text( v['doc'] )
+                .data('preview', v['preview'])
+            ;
+            var tick = $('<div/>')
+                .addClass('thumbtick')
+                .addClass('thumbtick_not_selected')
+                .fadeTo('fast', 0.0)
+                .click(function(){
+                    $(this).toggleClass('thumbtick_selected thumbtick_not_selected');
+                })
+            ;
+ 
+            $('<div/>')
+                .addClass('pnm')
+                .hover(
+                    function(){
+                        var t = $(this).find('.thumbtick');
+                        if( ! t.hasClass('thumbtick_selected'))
+                        {
+                            t.stop().fadeTo('fast', 1.0);
+                        }
+                    },
+                    function(){
+                        var t = $(this).find('.thumbtick');
+                        if( ! t.hasClass('thumbtick_selected'))
+                        {
+                            t.stop().fadeTo('slow', 0.0);
+                        }
+                    })
+                .append(tick)
+                .append(label)
+                .append(img)
+                .appendTo($this) 
+                ;
+        });
     });
+
+    return this;
+
 };
+
+function saneweb_init(){
+    // make sure this method is only called once
+    if( ! $('body').data('saneweb_inited') )
+    {
+        $('body').data('saneweb_inited', true) ;
+
+        // load preview diagram
+        $('<div/>')
+            .attr('id', 'saneweb_preview')
+            .html("<img id='thumb'/><div id='title'></div>")
+            .appendTo('body')
+            .dialog({
+                width: 500,
+                height: 500,
+                closeOnEscape: true,
+                autoOpen: false,
+                modal: true,
+                stack: true,
+                title: 'Preview',
+                buttons: {
+                    'Apply': saneweb_apply,
+                    'Cancel' : function(){$(this).dialog('close');}
+                    }
+            })
+        ;
+    }
+}
+
+function saneweb_showPreview(e){
+    var preview = $(e.currentTarget).data('thumb');
+    $('div#saneweb_preview img#thumb').attr('src', preview);
+    $('div#saneweb_preview div#title').text(preview);
+    $('div#saneweb_preview').dialog('open');
+    e.stopPropagation();
+};
+
+function saneweb_apply(e)
+{
+    alert(e);
+}
 
 })(jQuery);
 
