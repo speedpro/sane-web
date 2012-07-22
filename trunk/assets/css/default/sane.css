@@ -63,6 +63,7 @@ div#top li.right {
 
 div.saneweb_container{
     z-index: 10;
+    padding-top: 50px;
 
 }
 
@@ -126,13 +127,3 @@ div.saneweb_container div.thumbtick_not_selected {
     background-position:100% 0%;
 }
 
-div#saneweb_preview
-{
-    display: none;
-}
-
-
-div#saneweb_preview img#thumb
-{
-    flost: left;
-}

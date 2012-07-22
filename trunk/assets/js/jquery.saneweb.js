@@ -28,22 +28,50 @@ $.fn.saneweb = function(options) {
     }
 
     var config = {
-        service: ''
     };
+
     if (options){$.extend(config, options);}
 
     saneweb_init();
 
     var $this = $(this);
 
-    $.getJSON(options.service+'/get_documents', function(data){
+
+    $.getJSON('service/get_documents', function(data){
         $(data).each(function(i,v){
             var img = $('<img/>')
                 .data('preview', v['preview'])
                 .data('thumb', v['thumb'])
                 .data('label', v['doc'])
                 .attr('src', v['thumb'])
-                .click(saneweb_showPreview)
+                .click(
+                    function (e){
+                        var preview = $(e.currentTarget).data('preview');
+                        var label = $(e.currentTarget).data('label');
+                        $('div#saneweb_preview img#saneweb_preview_img')
+                            .attr('src', preview)
+                            .css('max-width', '200px')
+                            .css('height', 'auto !important')
+                            .css('width', 'expression(this.width > 620 ? 620: true);')
+                            .css('border', '1px solid gray')
+                            .css('margin', '4px')
+                            .css('float', 'left')
+
+                        ;
+                        //$('div#saneweb_preview').dialog('destroy');
+                        $('div#saneweb_preview').dialog({
+                            closeOnEscape: true,
+                            modal: true,
+                            stack: true,
+                            title: label,
+                            buttons: {
+                                'Apply': saneweb_apply,
+                                'Cancel' : function(){$(this).dialog('close');}
+                                }
+                        });
+             
+                        e.stopPropagation();
+                    })
             ;
             var label = $('<div/>')
                 .addClass('label')
@@ -97,32 +125,12 @@ function saneweb_init(){
         // load preview diagram
         $('<div/>')
             .attr('id', 'saneweb_preview')
-            .html("<img id='thumb'/><div id='title'></div>")
+            .html("<div><img id='saneweb_preview_img'/></div>")
             .appendTo('body')
-            .dialog({
-                width: 500,
-                height: 500,
-                closeOnEscape: true,
-                autoOpen: false,
-                modal: true,
-                stack: true,
-                title: 'Preview',
-                buttons: {
-                    'Apply': saneweb_apply,
-                    'Cancel' : function(){$(this).dialog('close');}
-                    }
-            })
-        ;
+       ;
     }
-}
 
-function saneweb_showPreview(e){
-    var preview = $(e.currentTarget).data('thumb');
-    $('div#saneweb_preview img#thumb').attr('src', preview);
-    $('div#saneweb_preview div#title').text(preview);
-    $('div#saneweb_preview').dialog('open');
-    e.stopPropagation();
-};
+}
 
 function saneweb_apply(e)
 {
