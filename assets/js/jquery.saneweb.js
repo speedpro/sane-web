@@ -59,6 +59,7 @@ $.fn.saneweb = function(options) {
 
                         ;
                         //$('div#saneweb_preview').dialog('destroy');
+                        $('div#saneweb_preview').dialog('distroy');
                         $('div#saneweb_preview').dialog({
                             closeOnEscape: true,
                             modal: true,
